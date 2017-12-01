@@ -47,12 +47,70 @@ int my_strlen(char *string) {
 	return length;
 }
 
-char * mystrtok(char *str, char *delim){
-    char buf[2048];
-    int pos = 0;
-    char *s;
+//String.h grabbed from : http://clc-wiki.net/wiki/C_standard_library:string.h
+//strchr: searches first occurence of c in string pointed by s
+char *strchr(const char *s, int c){
+    while(*s){
+        if(*s == c){
+            break;
+        }
+        s++;
+    }
+    return s;
+}
 
-    int 
+size_t strspn(const char *str, const char *str2){
+    size_t res = 0;
+    while(*str && strchr(str2,*str)){
+        res++;
+    }
+    return res;
+}
+
+size_t strcspn(const char *str1, const char *str2){
+    size_t res = 0;
+    while(*str1){
+        if(strchr(str2,*str1)){
+            return res;
+        }
+        else{
+            str1++; res++;
+        }
+    }
+    return res;
+}
+
+static char *olds;
+
+//source: http://www.beedub.com/Sprite093/src/lib/c/string/strtok.c
+char *mystrtok(char *str, const char *delim){
+    static char *lasts;
+    register int ch;
+
+    if(s == 0){
+        s = lasts;
+    }
+    while(strchr(delim, ch)) {
+        if ((ch = *s++) == '\0'){
+            return 0;
+        }
+    }
+    --s;
+    lasts = s + strcspn(s, delim);
+    if(*lasts != 0){
+        *lasts++ = 0;
+    }
+
+    return s;
+}
+
+int atoi(char *str){
+    int res = 0;
+    // go through char and update resutl:
+    for (int i = 0; str[i] != '\0'; ++i){
+        res = res*10 + str[i] - '0';
+    }
+    return res;
 }
 
 #endif

@@ -6,7 +6,8 @@
 //login.c : upon entry, argv[0] = login, argv[1] = tty
 
 int in, out, err;
-char usrname[128], password[128];
+char usrname[128], password[128], homedir[256], prog[256];
+int uid, gid;
 
 main(int argc, char  *argv[]) {
     prints("JOMAR'S LOGIN EXEC PROC \n");
@@ -53,8 +54,38 @@ main(int argc, char  *argv[]) {
         }
         
         //we can now tokenize each password and see if it matches:
+        bool valid = false;
+        char *tok = strtok(buf, ":\n"); //grab username.
+        while(tok != NULL){
+            //compare both file's username & see if its valid:
+            if(strcmp(tok,usrname) == 0){
+                prints("Valid username!\n");
+                //compare both file's password & username:
+                tok = strtok(NULL, ":\n");
+                
+                if(strcmp(tok, password) == 0){
+                    prints("Valid password! \n");
+                    //set everything:
+                    valid = true;
+                    //originally string so change to int:
+                    uid = atoi(strtok(NULL, ":\n"));
+                    gid = atoi(strtok(NULL, ":\n"));
+                    strcpy(usrname, strtok(NULL, ":\n"));
+                    strcpy(homedir, strtok(NULL, ":\n"));
+                    strcpy(prog, strtok(NULL, ":\n"));
+                    chuid(uid, gid);
+                    chdir(homedir);
+                    exec(prog);
+                    close(file);
+                }
+            }
 
+            tok = strtok(NULL, ":\n");
+        }
     }
+
+    prints("Login failed, try again\n");
+
 }
 
 #endif
