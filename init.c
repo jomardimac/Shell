@@ -6,6 +6,7 @@ int console;
 int parent() {
     int pid, status;
     while(1){
+        prints("JOMAR'S INIT\n");
         prints("INIT: waiting for a zombie child.\n");
         pid = wait(&status);
         //console login proc died:
