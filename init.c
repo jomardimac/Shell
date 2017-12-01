@@ -1,3 +1,5 @@
+#ifndef INIT_C
+#define INIT_C
 /*init file: p0 creates a child p1 -> loads /bin/init and goes to Umode. 
   p1 executes init program & will allow to fork several login procs. */
 #include "ucode.c"
@@ -40,3 +42,5 @@ main(){
         exec("login /dev/tty0");
     }
 }
+
+#endif

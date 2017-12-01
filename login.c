@@ -1,12 +1,12 @@
-#ifndef LOGIN
-#define LOGIN
+#ifndef LOGIN_C
+#define LOGIN_C
 
 #include "ucode.c"
 
 //login.c : upon entry, argv[0] = login, argv[1] = tty
 
 int in, out, err;
-char name[128], pword[128];
+char usrname[128], password[128];
 
 main(int argc, char  *argv[]) {
     prints("JOMAR'S LOGIN EXEC PROC \n");
@@ -24,8 +24,12 @@ main(int argc, char  *argv[]) {
 
     //open /etc/password for READ:
     while(1){
-        prints("Username: "); gets(name);
-        prints("Password: "); gets(password);
+        prints("Username: "); 
+        gets(usrname);
+        prints("Password: "); 
+        gets(password);
+        printf("inputed Username: %s \n", usrname);
+        printf("inputted Password: %s \n", password);
         //foreach line in /etc/password file do{
         // tokenize user account line;
         // if valid{
@@ -48,7 +52,8 @@ main(int argc, char  *argv[]) {
             exit(1);
         }
         
-        
+        //we can now tokenize each password and see if it matches:
+
     }
 }
 
