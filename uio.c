@@ -1,3 +1,5 @@
+#ifndef IO_C
+#define IO_C
 /********************************************************************
 Copyright 2010-2017 K.C. Wang, <kwang@eecs.wsu.edu>
 This program is free software: you can redistribute it and/or modify
@@ -193,3 +195,6 @@ int printk(char *fmt, ...)
     cp++; ip++;
   }
 }
+
+
+#endif

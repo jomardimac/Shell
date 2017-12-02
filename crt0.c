@@ -1,3 +1,6 @@
+#ifndef CRT0_C
+#define CRT0_C
+
 /********************************************************************
 Copyright 2010-2017 K.C. Wang, <kwang@eecs.wsu.edu>
 This program is free software: you can redistribute it and/or modify
@@ -65,3 +68,6 @@ void main0(char *s)
   main(argc, argv);
 }
 
+
+
+#endif

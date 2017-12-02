@@ -86,7 +86,6 @@ main(int argc, char  *argv[]) {
                 prints("Valid username!\n");
                 //compare both file's password & username:
                 printf("tok: %s", tok);
-                valid = 1;
                 tok = mystrtok(0, ":\n");
                 if(strcmp(tok, password) == 0){
                     printf("pass tok: %s ", tok);
@@ -94,15 +93,15 @@ main(int argc, char  *argv[]) {
                     //set everything:
                     valid = 1;
                     //originally string so change to int:
-                    // gid = atoi(mystrtok(":", ":\n"));
-                    // uid = atoi(mystrtok(":", ":\n"));
-                    // strcpy(usrname, mystrtok(":", ":\n"));
-                    // strcpy(homedir, mystrtok(":", ":\n"));
-                    // strcpy(prog, mystrtok(0, ":\n"));
-                    // chuid(uid, gid);
-                    // chdir(homedir);
-                    //exec("sh");
-                    //close(fd);
+                    gid = atoi(mystrtok(0, ":\n"));
+                    uid = atoi(mystrtok(0, ":\n"));
+                    strcpy(usrname, mystrtok(0, ":\n"));
+                    strcpy(homedir, mystrtok(0, ":\n"));
+                    strcpy(prog, mystrtok(0, ":\n"));
+                    chuid(uid, gid);
+                    chdir(homedir);
+                    exec("sh");
+                    close(fd);
                 }
                 
             }

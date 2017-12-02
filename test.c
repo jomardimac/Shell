@@ -1,3 +1,5 @@
+#ifndef TEST_C
+#define TEST_C
 /********** test.c file *************/
 #include "ucode.c"
 
@@ -13,3 +15,6 @@ int main(int argc, char *argv[ ])
     printf("argv[%d] = %s\n", i, argv[i]);
   printf("exit\n");
 }
+
+
+#endif
