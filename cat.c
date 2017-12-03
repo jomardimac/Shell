@@ -1,12 +1,32 @@
 #ifndef CAT_C
 #define CAT_C
 
+#include "ucode.c"
 int main(int argc, char *argv[]){
+    prints("JOMARS CAT GOES PURRR");
     int n = 0;
-    struct stat sp;
-    char buf[8192];
-    while((n = read( 0, buf, O_RDONLY)) > 0){
-        printf("%s", buf);
+    int fd;
+    //struct stat sp;
+    char buf[8192], cmdLine[64];
+    if(argc < 0){
+        prints("No input\n");
+        
+    }
+    else if(argc == 1){
+        prints("No filename given\n");
+    }
+    else{
+        
+        strcpy(cmdLine, argv[1]);
+        if(fd = open(cmdLine, 0)){
+            prints("open() failed\n");
+        }
+
+        while((n = read( fd, buf, 8192)) > 0){
+            printf("%s", buf);
+        }
+
+        close(fd);
     }
 }
 

@@ -105,7 +105,7 @@ main(int argc, char  *argv[]) {
                 }
                 
             }
-
+            
             tok = mystrtok(0, ":\n");
         }
     }
