@@ -6,7 +6,7 @@ int main(int argc, char *argv[]){
     int n = 0;
     int fd;
 
-    char buf[1028], cmdline[64];
+    char buf[80], cmdline[64];
     if(argc < 0){
         prints("Nothing inputted\n");
 
@@ -16,16 +16,20 @@ int main(int argc, char *argv[]){
 
     }
     else{
-        fd = open(argv[1], 0);
-        while(n = (read(fd, buf, 1028)){
+        strcpy(cmdline, argv[1]);
+        fd = open(cmdline, 0);
+        while(n = (read(fd, buf, 80))){
             printf("%s", buf);
             
-            if(n == 80){
-                prints("\n");
-                getc();
+            // if(n == 80){
+            //     prints("\n");
+            //     getc();
                 
-            }
+            // }
+            getc();
         }
+        
     }
+    close(fd);
 }
 #endif

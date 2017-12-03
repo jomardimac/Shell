@@ -7,7 +7,7 @@ int main(int argc, char *argv[]){
     int n = 0;
     int fd;
     //struct stat sp;
-    char buf[8192], cmdLine[64];
+    char buf[512], cmdLine[64];
     if(argc < 0){
         prints("No input\n");
         
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]){
             prints("open() failed\n");
         }
 
-        while((n = read( fd, buf, 8192)) > 0){
+        while((n = read( fd, buf, 512))){
             printf("%s", buf);
         }
 
