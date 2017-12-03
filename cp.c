@@ -4,7 +4,9 @@
 #include "ucode.c"
 main(int argc, char *argv[]){
     int fds, fdd;
-    char src[8192], dest[8192];
+    char buf[1024];
+    int n, m = 0;
+    prints("Jomar's cp command!\n");
     //no source or dest:
     if(argc < 3){
         prints("Not valid command");
@@ -12,14 +14,21 @@ main(int argc, char *argv[]){
     
     else {
         //open up the two command lines 
-        if((fds = open(argv[1], 0)< 0)  && fdd = open(argv[1], O_WRONLY | O_CREAT) < 0)){
-            printf("open() failed");
+        fds = open(argv[1], O_RDONLY);
+        fdd = open(argv[2], O_WRONLY | O_CREAT);
+        if(fds < 0 || fdd < 0) {
+            prints("open() failed");
         }
-        else{
-            //read n byetes from source, write to dest n bytes
-            while(n = read(fds, buf, 8192)){
-                write(fdd, buf, n)
+        else {
+            //read n byetes from source save it to buf
+            //, write to dest n bytes from buf
+            while((n = read(fds, buf, 1024))){
+                printf("n = %d bytes ", n);
+                write(fdd, buf, n);
+                m += n;
             }
+            printf("%d bytes copied\n", m);
+            //close after done reading and writing:
             close(fds);
             close(fdd);
         }
