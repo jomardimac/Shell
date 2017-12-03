@@ -4,7 +4,7 @@
 #include "ucode.c"
 main(int argc, char *argv[]){
     int fds, fdd;
-    char buf[1024];
+    char buf[8192];
     int n, m = 0;
     prints("Jomar's cp command!\n");
     //no source or dest:
@@ -22,7 +22,7 @@ main(int argc, char *argv[]){
         else {
             //read n byetes from source save it to buf
             //, write to dest n bytes from buf
-            while((n = read(fds, buf, 1024))){
+            while((n = read(fds, buf, 8192))){
                 printf("n = %d bytes ", n);
                 write(fdd, buf, n);
                 m += n;

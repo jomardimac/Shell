@@ -22,10 +22,7 @@ int main(int argc, char *argv[]){
         //read file and store in buf then print:
         while((read(fd, buf, 128))){
             printf("%s", buf);
-            
-            
             //Clear the previous string saved in buf:
-            
             getc();
         }
         
