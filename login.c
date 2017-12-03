@@ -28,6 +28,7 @@ main(int argc, char  *argv[]) {
     int valid = 0;
     FilePassword ftable[10];
     prints("JOMAR'S LOGIN EXEC PROC \n");
+    
     // close file descriptors 0,1,2, from init which are.
     //0 = standard in, 1 = standard out, 2 = standard error
     close(0); close(1); close(2);
@@ -36,13 +37,15 @@ main(int argc, char  *argv[]) {
     in = open(argv[1], 0);
     out = open(argv[1], 1);
     err = open(argv[1], 2);
-
+        
     //set tty name string in PROC.tty:
     fixtty(argv[1]);
 
+    printf("Jomar-Login: open: %s as stdin=%d, stdout=%d, stderr=%d \n",argv[1],in, out, err);
+
     //open /etc/password for READ:
     while(1){
-        prints("Username: "); 
+        prints("\nUsername: "); 
         gets(usrname);
         prints("Password: "); 
         gets(password);

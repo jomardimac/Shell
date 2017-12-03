@@ -5,8 +5,8 @@
 int main(int argc, char *argv[]){
     int n = 0;
     int fd;
-
-    char buf[80], cmdline[64];
+    prints("JOMAR'S MORE MAN!\n");
+    char buf[128], cmdline[64];
     if(argc < 0){
         prints("Nothing inputted\n");
 
@@ -16,16 +16,16 @@ int main(int argc, char *argv[]){
 
     }
     else{
+        //open file:
         strcpy(cmdline, argv[1]);
         fd = open(cmdline, 0);
-        while(n = (read(fd, buf, 80))){
+        //read file and store in buf then print:
+        while((read(fd, buf, 128))){
             printf("%s", buf);
             
-            // if(n == 80){
-            //     prints("\n");
-            //     getc();
-                
-            // }
+            
+            //Clear the previous string saved in buf:
+            
             getc();
         }
         

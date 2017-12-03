@@ -3,7 +3,7 @@
 
 #include "ucode.c"
 int main(int argc, char *argv[]){
-    prints("JOMARS CAT GOES PURRR");
+    prints("JOMARS CAT GOES PURRR\n");
     int n = 0;
     int fd;
     //struct stat sp;
@@ -18,9 +18,7 @@ int main(int argc, char *argv[]){
     else{
         
         strcpy(cmdLine, argv[1]);
-        if(fd = open(cmdLine, 0)){
-            prints("open() failed\n");
-        }
+        fd = open(cmdLine, O_RDONLY);
 
         while((n = read( fd, buf, 512))){
             printf("%s", buf);
