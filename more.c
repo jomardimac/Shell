@@ -2,6 +2,10 @@
 #define MORE_C
 
 #include "ucode.c"
+void printLine(int fd);
+void printChar(int fd);
+void printPage(int fd);
+int endoffile = 1;
 int main(int argc, char *argv[]){
     //80 characters in a line
     int n = 0, line = 80, page = 20;
@@ -29,12 +33,12 @@ int main(int argc, char *argv[]){
         //read file and store in buf then print:
         //but first, print out the whole page:
         printPage(fd);
-        while(1) {
+        while(endoffile != 0) {
             userch = getc();
             //printf("\nTHIS IS THE CHAR PRESSED %c\n", userch);
             //'\n' is a line, ' ' is a whole page, else is next char
             if(userch == '\r'){
-                //printLine(fd);
+                printLine(fd);
             }
             else if( userch == ' ') {
                 printPage(fd);
@@ -44,12 +48,12 @@ int main(int argc, char *argv[]){
             }
         }
     
-        
+        close(fd); 
     }
-    close(fd);
+    
 }
 
-printPage(int fd){
+void printPage(int fd){
     int line = 0, byt = 0, n = 0;
     int LINES = 10, CHARS = 80;
     char c;
@@ -61,7 +65,17 @@ printPage(int fd){
         while(byt < CHARS){
             //read the char:
             n = read(fd, &c, 1);
+            //check if it can't be read
+            if(n == 0){
+                endoffile = 0;
+                return;
+            }
+            // //skips enter key:
+            // if(c == '\n' || c == '\r'){
+            //     break;
+            // }
             mputc(c);
+            
             byt++;
         }
         
@@ -70,10 +84,38 @@ printPage(int fd){
     mputc('\n');
 }
 
-printChar(int fd){
+void printChar(int fd){
     char c;
-    read(fd, &c, 1);
-    mputc(c);
+    int n = read(fd, &c, 1);
+    if(n == 0){
+        endoffile = 0;
+        return;
+    }
+    if(c != '\n' || c != '\r'){
+        mputc(c);
+    }
+    
 }
 
+void printLine(int fd){
+    int byt = 0, n = 0;
+    int CHARS = 80;
+    char c;
+
+    byt = 0;
+    //read 80 bytes in a line:
+    while(byt < CHARS){
+        //read the char:
+        n = read(fd, &c, 1);
+        if(n == 0){
+           endoffile = 0;
+           return; 
+        }
+        
+        mputc(c);
+        byt++;
+    }
+    
+    mputc('\n');
+}
 #endif
