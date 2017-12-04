@@ -3,10 +3,17 @@
 
 #include "ucode.c"
 
-int main(int argc, int argv[1]){
+int E_OF = 1;
+
+int strncmp(char * s1, const char *s2, int i);
+char *findSubstr(char *substr, char *src);
+void * my_memset(void *s, int c, int n);
+
+int main(int argc, char *argv[1]){
     int fd;
-    int n;
-    char pat[64], buf[1024];
+    int n, line;
+    int LINES = 80;
+    char pat[64], buf[128];
 
     if(argc < 1){
         prints("Pattern required\n");
@@ -19,13 +26,87 @@ int main(int argc, int argv[1]){
     //open file name up and start looking for lines with pattern:
     else{
         strcpy(pat, argv[1]);
-        fd = open(argv[2], O_RDONLY);
+        if((fd = open(argv[2], O_RDONLY)) < 0){
+            prints("open() failed\n");
+            exit(1);
+        }
 
         //go through the file:
-        while((n =  read(fd, buf, 1024))) {
-            
+        while(E_OF == 1){
+            my_memset(buf, 0, 128);
+            //go through a line and see if 'pattern' matches:
+            line = 0;
+            while(line < LINES){
+                n = read(fd, &buf[line], 1);
+                //end of file:
+                if(n == 0) {
+                    E_OF = 0;
+                }
+                //end of line, with root
+                else if(buf[line] == '\n' || buf[line] == '\r') {
+                    buf[line + 1] = 0;
+                    break;
+                }
+                line ++;
+                
+            }
+            //printf("%s", buf); //testing buffer.
+            if(findSubstr(pat, buf) != 0){
+                printf("%s", buf);
+            }
         }
+        close(fd);
     }
+}
+
+int my_strncmp(char * s1, const char *s2, int i){
+    int j = 0;
+    while(*s1 != 0 && *s2 != 0 && i < j){
+        if(*s1++ && *s2 ++){
+            return 0;
+        }
+        i++;
+    }
+
+    if(*s1 != *s2){
+        return 0;
+    }
+
+    return 1;
+}
+
+char *findSubstr(char *substr, char *src){
+    char *a , *b;
+
+    b = substr;
+    if(*b == 0){
+        return src;
+    }
+    for( ; *src != 0; src++){
+        if(*src != *b){
+            continue;
+        }
+        a = src;
+        while(1){
+            if (*b == 0){
+                return src;
+            }
+            if (*a++ != *b++){
+                break;
+            }
+
+        }
+        b = substr;
+    }
+    return 0;
+}
+
+void * my_memset(void *s, int c, int n){
+    unsigned char *p = s;
+    while(n--){
+        *p++ = (unsigned char) c;
+    }
+    return s;
 }
 
 #endif

@@ -113,4 +113,23 @@ int atoi(char *str){
     return res;
 }
 
+int strncmp(char * s1, const char *s2, int i){
+    int j = i;
+
+    for( ; j > 0; j-= 1) { 
+        if(*s1 != s2){
+            if(*s1 > *s2){
+                return 1;
+            }
+            else {
+                return -1;
+            }
+        }
+        if (*s++ = 0)){
+            return 0;
+        }
+        s2 += 1;
+    }
+    return 0;
+}
 #endif
