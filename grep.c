@@ -59,54 +59,6 @@ int main(int argc, char *argv[1]){
     }
 }
 
-int my_strncmp(char * s1, const char *s2, int i){
-    int j = 0;
-    while(*s1 != 0 && *s2 != 0 && i < j){
-        if(*s1++ && *s2 ++){
-            return 0;
-        }
-        i++;
-    }
 
-    if(*s1 != *s2){
-        return 0;
-    }
-
-    return 1;
-}
-
-char *findSubstr(char *substr, char *src){
-    char *a , *b;
-
-    b = substr;
-    if(*b == 0){
-        return src;
-    }
-    for( ; *src != 0; src++){
-        if(*src != *b){
-            continue;
-        }
-        a = src;
-        while(1){
-            if (*b == 0){
-                return src;
-            }
-            if (*a++ != *b++){
-                break;
-            }
-
-        }
-        b = substr;
-    }
-    return 0;
-}
-
-void * my_memset(void *s, int c, int n){
-    unsigned char *p = s;
-    while(n--){
-        *p++ = (unsigned char) c;
-    }
-    return s;
-}
 
 #endif

@@ -118,36 +118,5 @@ main(int argc, char  *argv[]) {
 }
 
 
-char *mystrtok(char *src, const char *delim){
-    static char *nextTok;
-    char *tok = 0;
-    if(!src){
-        src = nextTok;
-    }
-    while(*src){
-        const char *pp = delim;
-        while(*pp){
-            if( *pp == *src){
-                break;
-            }
-            pp++;
-        }
-        if(!*pp){
-            if(!tok){
-                tok = src;
-            }
-            else if(!src[-1]){
-                break;
-            }
-        }
-        else {
-            *src  = '\0';
-        }
-        src++;
 
-    }
-    nextTok = src;
-
-    return tok;
-}
 #endif

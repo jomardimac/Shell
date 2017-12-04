@@ -544,4 +544,101 @@ int strcasecmp(char *s1, char *s2)
   return strcmp(t1, t2);
 }
 */
+
+/******I MADE THESE FUNCTIONS: ******/
+
+//ascii numbers from a-z (97-122)
+char *toUpper(char *str){
+  int i = 0;
+  while(*str++){
+      if(str[i] <= 122 && str[i] >= 97){
+          str[i] = str[i] - 32;
+      }
+  }
+  return str;
+}
+
+int my_strncmp(char * s1, const char *s2, int i){
+  int j = 0;
+  while(*s1 != 0 && *s2 != 0 && i < j){
+      if(*s1++ && *s2 ++){
+          return 0;
+      }
+      i++;
+  }
+
+  if(*s1 != *s2){
+      return 0;
+  }
+
+  return 1;
+}
+
+char *findSubstr(char *substr, char *src){
+  char *a , *b;
+
+  b = substr;
+  if(*b == 0){
+      return src;
+  }
+  for( ; *src != 0; src++){
+      if(*src != *b){
+          continue;
+      }
+      a = src;
+      while(1){
+          if (*b == 0){
+              return src;
+          }
+          if (*a++ != *b++){
+              break;
+          }
+
+      }
+      b = substr;
+  }
+  return 0;
+}
+
+void * my_memset(void *s, int c, int n){
+  unsigned char *p = s;
+  while(n--){
+      *p++ = (unsigned char) c;
+  }
+  return s;
+}
+
+char *mystrtok(char *src, const char *delim){
+  static char *nextTok;
+  char *tok = 0;
+  if(!src){
+      src = nextTok;
+  }
+  while(*src){
+      const char *pp = delim;
+      while(*pp){
+          if( *pp == *src){
+              break;
+          }
+          pp++;
+      }
+      if(!*pp){
+          if(!tok){
+              tok = src;
+          }
+          else if(!src[-1]){
+              break;
+          }
+      }
+      else {
+          *src  = '\0';
+      }
+      src++;
+
+  }
+  nextTok = src;
+
+  return tok;
+}
+
 #endif

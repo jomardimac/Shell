@@ -14,6 +14,24 @@ main (int argc, char *argv[]){
     //make things uppercase:
     if(argc == 1){
         prints("No filename given!\n");
+        fds = open(0, O_RDONLY);
+        fdd = open(0, O_WRONLY);
+        while((n = read(fds, buf, 8192))){
+            //check for '\n':
+            toUpper(buf);
+            m = 0;
+            while(m < n){
+                if(buf[m] == '\r' || buf[m] == '\n'){
+                    buf[m] = '\n';
+                }
+                
+                write(fdd, &buf[m], 1);
+                m++;
+            }
+        }
+        prints("done with copying to uppercase\n");
+        close(fds);
+        close(fdd);
 
     }
     //make the file uppercase
@@ -48,15 +66,4 @@ main (int argc, char *argv[]){
     }
 }
 
-
-//ascii numbers from a-z (97-122)
-char *toUpper(char *str){
-    int i = 0;
-    while(*str++){
-        if(str[i] <= 122 && str[i] >= 97){
-            str[i] = str[i] - 32;
-        }
-    }
-    return str;
-}
 #endif
