@@ -15,13 +15,13 @@ int main(int argc, char *argv[]){
     else if(argc == 1){
         prints("No filename given\n");
 
-        while(read(0, &userch, 1)){
+        while(read(stdin, &userch, 1)){
             //check for enter line and add the line in stdout
             if(userch == '\n' || userch == '\r'){
                 write(stdout, "\n", 1);
                 write(stdout, "\r", 1);
             }
-            //if not, then nah:
+            //if not, then just put the char in screen:
             else{
                 write(stdout, &userch, 1);
             }
