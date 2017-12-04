@@ -550,10 +550,11 @@ int strcasecmp(char *s1, char *s2)
 //ascii numbers from a-z (97-122)
 char *toUpper(char *str){
   int i = 0;
-  while(*str++){
+  while(*str){
       if(str[i] <= 122 && str[i] >= 97){
           str[i] = str[i] - 32;
       }
+      str++;
   }
   return str;
 }

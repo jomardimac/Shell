@@ -14,18 +14,18 @@ main (int argc, char *argv[]){
     //make things uppercase:
     if(argc == 1){
         prints("No filename given!\n");
-        fds = open(0, O_RDONLY);
-        fdd = open(0, O_WRONLY);
-        while((n = read(fds, buf, 8192))){
+        while((n = read(0, buf, 1))){
             //check for '\n':
             toUpper(buf);
             m = 0;
-            while(m < n){
+            while(m < n) {
                 if(buf[m] == '\r' || buf[m] == '\n'){
-                    buf[m] = '\n';
+                    write(1, "\n", 1);
+                    write(1, "\r", 1);
                 }
-                
-                write(fdd, &buf[m], 1);
+                else {
+                    write(1, &buf[m], 1);
+                }
                 m++;
             }
         }
