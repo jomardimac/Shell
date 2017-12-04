@@ -9,7 +9,7 @@ main(int argc, char *argv[]){
     prints("Jomar's cp command!\n");
     //no source or dest:
     if(argc < 3){
-        prints("Not valid command");
+        prints("Not valid command\n");
     }
     
     else {
