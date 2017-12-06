@@ -11,7 +11,8 @@ int main(int argc, char *argv[]){
     int n = 0, line = 80, page = 20;
     int fd;
     int stdin = 0, stdout = 1;
-    
+    char tty[128];
+
     prints("JOMAR'S MORE MAN!\n");
     char buf[1600], cmdline[64], userch, c;
 
@@ -22,9 +23,28 @@ int main(int argc, char *argv[]){
 
     else if(argc == 1){
         prints("No file selected\n");
-        while(read(stdin, &userch, 1)){
-            write(stdout, &userch, 1);
+        //do mroe in stdin and stdout:
+        fd = dup(0);
+        close(0);
+
+        //gettty(tty); //read:
+        open(tty, O_RDONLY);
+        endoffile = 1;
+        while(endoffile != 0) {
+            userch = getc();
+            //printf("\nTHIS IS THE CHAR PRESSED %c\n", userch);
+            //'\n' is a line, ' ' is a whole page, else is next char
+            if(userch == '\r'){
+                printLine(fd);
+            }
+            else if( userch == ' ') {
+                printPage(fd);
+            }
+            else {
+                printChar(fd);
+            }
         }
+        close(fd); 
     }
     else{
         //open file:
@@ -70,11 +90,10 @@ void printPage(int fd){
                 endoffile = 0;
                 return;
             }
-            // //skips enter key:
-            // if(c == '\n' || c == '\r'){
-            //     break;
-            // }
-            mputc(c);
+            if(c != '\n' || c != '\r'){
+                mputc(c);
+            }
+            //mputc(c);
             
             byt++;
         }
