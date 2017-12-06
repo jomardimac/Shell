@@ -69,10 +69,12 @@ int main(int argc, char *argv[]) {
                 printf("child %d done with proc\n", pid);                
             }
             else {
+                printf("\n\nCOMMANDLINE = %s \n\n", cmdline);
                 if(pipeFound(cmdline) == 0){
                     exec(cmdline);
                 }
                 else{
+                    prints("***************************PIPING!***********\n");
                     do_pipe(cmdline);
                 }
             }
@@ -132,8 +134,8 @@ int pipeFound(char *cmdl){
     char *c = cmdl;
 
     while(*c){
-        if(c == '|'){
-            return 0;
+        if(*c == '|'){
+            return 1;
         }
         *c++;
     }

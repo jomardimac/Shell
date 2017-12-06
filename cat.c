@@ -2,6 +2,7 @@
 #define CAT_C
 
 #include "ucode.c"
+void * my_memset(void *s, int c, int n);
 int main(int argc, char *argv[]){
     prints("JOMARS CAT GOES PURRR\n");
     int n = 0, i = 0;
@@ -31,11 +32,11 @@ int main(int argc, char *argv[]){
         //open the file, read the file and print the buffer
         strcpy(cmdLine, argv[1]);
         fd = open(cmdLine, O_RDONLY);
-
+        my_memset(buf, 0, 512);
         while((n = read( fd, buf, 512))){
             printf("%s", buf);
         }
-
+        my_memset(buf, 0, 512);
         close(fd);
     }
 }
