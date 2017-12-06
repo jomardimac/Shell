@@ -113,6 +113,7 @@ void do_pipe(char *cmdl) {
     int i = 0, j = 0;
     char *tok, *cmd1, *cmd2;
     char head[128], tail[128], temp[128];
+    
     strcpy(temp, cmdl);
 
     //grab  first commands:

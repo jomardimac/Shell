@@ -26,6 +26,7 @@ int main(int argc, char *argv[]){
             else{
                 write(stdout, &userch, 1);
             }
+            //write(stdout, &userch, 1);
         }
     }
     else{
