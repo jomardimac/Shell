@@ -111,16 +111,20 @@ int main(int argc, char *argv[]) {
 void do_pipe(char *cmdl) {
     int pid, pd[2];
     char *tok, *cmd1, *cmd2;
-    char head[128], tail[128];
+    char head[128], tail[128], temp[128];
+    strcpy(temp, cmdl);
+
     //grab  first commands:
-    cmd1 = mystrtok(cmdl, "|");
+
+    cmd1 = mystrtok(temp, "|");
     strcpy(head, cmd1);
     //grab second:
     cmd2 = mystrtok(0, " \n");
     strcpy(tail, cmd2);
 
+    
     printf("Head: %s", head);
-    printf(" Tail: %s", tail);
+    printf(" Tail: %s\n", cmd2);
     pipe(pd); //create a pipe: pd[0] = READ, pd[1] = WRITE
     pid = fork(); //fork a child to share the pipe.
 

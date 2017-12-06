@@ -59,16 +59,16 @@ char *strchr(const char *s, int c){
     return s;
 }
 
-size_t strspn(const char *str, const char *str2){
-    size_t res = 0;
+int strspn(const char *str, const char *str2){
+    int res = 0;
     while(*str && strchr(str2,*str)){
         res++;
     }
     return res;
 }
 
-size_t strcspn(const char *str1, const char *str2){
-    size_t res = 0;
+int strcspn(const char *str1, const char *str2){
+    int res = 0;
     while(*str1){
         if(strchr(str2,*str1)){
             return res;
@@ -80,7 +80,6 @@ size_t strcspn(const char *str1, const char *str2){
     return res;
 }
 
-static char *olds;
 
 //source: http://www.beedub.com/Sprite093/src/lib/c/string/strtok.c
 char *mystrtok(char *str, const char *delim){
