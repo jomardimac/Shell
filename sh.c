@@ -110,34 +110,53 @@ int main(int argc, char *argv[]) {
 
 void do_pipe(char *cmdl) {
     int pid, pd[2];
+    int i = 0, j = 0;
     char *tok, *cmd1, *cmd2;
     char head[128], tail[128], temp[128];
     strcpy(temp, cmdl);
 
     //grab  first commands:
+    while(temp[i] != '|' ) {
+        head[i] = temp[i];
+        i++;
+    }
+    head[i - 1] = 0;
 
-    cmd1 = mystrtok(temp, "|");
-    strcpy(head, cmd1);
+    // cmd1 = mystrtok(temp, "|");
+    // strcpy(head, cmd1);
     //grab second:
-    cmd2 = mystrtok(0, " \n");
-    strcpy(tail, cmd2);
-
+    i = 0; j = 0;
+    while(temp[i] != '|') { 
+        i++;
+    }
+    i += 2;
     
-    printf("Head: %s", head);
-    printf(" Tail: %s\n", cmd2);
+    while(temp[i] != 0 ) {
+        tail[j] = temp[i];
+        i++;j++;
+    }
+    tail[j] = 0;
+    
+    printf("Head: %s\n", head);
+    printf("Tail: %s\n", tail);
+    
     pipe(pd); //create a pipe: pd[0] = READ, pd[1] = WRITE
     pid = fork(); //fork a child to share the pipe.
 
     //PARENT PROC:
     if(pid){ //parent = reader
-        close(pd[1]); //close the pip write
+        close(pd[1]); //close the pip read
         dup2(pd[0], 0);   //redirect stdout to pipe write
+        
+
         if(pipeFound(tail) != 0) {
             printf("Found a pipe: %s\n", tail);
             do_pipe(tail);
+            
         }
         else {
             exec(tail);
+            
         }
     }
     //CHILD PROC:
@@ -145,6 +164,7 @@ void do_pipe(char *cmdl) {
         close(pd[0]);   //close WRIT:
         dup2(pd[1], 1); //reopen write
         exec(head);
+        
     }
 
     return;
