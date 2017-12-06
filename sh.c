@@ -7,6 +7,8 @@ void do_pipe(char *cmdl);
 char *mystrtok(char *source, const char *delimeter);
 void * my_memset(void *s, int c, int n);
 
+int status;
+
 int main(int argc, char *argv[]) {
     char cmdline[128], temp[128], *tok;
     int pid;
@@ -55,8 +57,6 @@ int main(int argc, char *argv[]) {
         }
         //******************END OF COMMON DIRECTORY AND LOGGOUT **************************//
 
-
-
         else {
             //we fork!
             prints("Fork a child proc to run the command!\n");
@@ -71,8 +71,8 @@ int main(int argc, char *argv[]) {
             if(pid) {
                 //do child first
                 printf("Parent id: %d forked child: %d ... waiting for it to die\n", getpid(), pid);
-                pid = wait(0);
-                printf("child %d done with proc\n", pid);                
+                pid = wait(&status);
+                printf("child %d done with proc BACK TO SHELL!\n", pid);                
             }
             else {
                 printf("\n\nCOMMANDLINE = %s \n\n", cmdline);
@@ -128,7 +128,13 @@ void do_pipe(char *cmdl) {
     if(pid){ //parent = reader
         close(pd[1]); //close the pip write
         dup2(pd[0], 0);   //redirect stdout to pipe write
-        exec(tail);
+        if(pipeFound(tail) != 0) {
+            printf("Found a pipe: %s\n", tail);
+            do_pipe(tail);
+        }
+        else {
+            exec(tail);
+        }
     }
     //CHILD PROC:
     else { //child = pipe
@@ -136,6 +142,8 @@ void do_pipe(char *cmdl) {
         dup2(pd[1], 1); //reopen write
         exec(head);
     }
+
+    return;
 }
 
 int pipeFound(char *cmdl){

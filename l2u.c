@@ -3,9 +3,10 @@
 
 #include "ucode.c"
 char *toUpper(char *c);
+void * my_memset(void *s, int c, int n);
 main (int argc, char *argv[]){
     int fds, fdd;
-    char buf[8192], userchar;
+    char buf[512], userchar;
     int n, m = 0;
     prints("Jomar's L2U Command!\n");
     if(argc < 0){
@@ -13,25 +14,32 @@ main (int argc, char *argv[]){
     }
     //make things uppercase:
     if(argc == 1){
+        fds = 0;
+        fdd = 1;
         prints("No filename given!\n");
-        while((n = read(0, buf, 1))){
+        my_memset(buf, 0, 512);
+        while((n = read(fds, buf, 1)) > 0){
+            if(n < 0) { 
+                break;
+            }
             //check for '\n':
             toUpper(buf);
             m = 0;
             while(m < n) {
-                if(buf[m] == '\r' || buf[m] == '\n'){
-                    write(1, "\n", 1);
-                    write(1, "\r", 1);
+                if(buf[m] == '\r'){
+                    buf[m] = '\n';
                 }
-                else {
-                    write(1, &buf[m], 1);
+                
+                write(fdd, &buf[m], 1);
+                if(buf[m] == '\n') { 
+                    write(2, "\r", 1);
                 }
                 m++;
             }
         }
-        prints("done with copying to uppercase\n");
         close(fds);
         close(fdd);
+        exit(1);
 
     }
     //make the file uppercase
@@ -64,6 +72,8 @@ main (int argc, char *argv[]){
             close(fdd);
         }
     }
+
+    exit(1);
 }
 
 #endif
