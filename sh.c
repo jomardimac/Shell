@@ -18,14 +18,18 @@ int main(int argc, char *argv[]) {
         char curdir[128];
         getcwd(curdir);
         //grab my commands: 
-        printf("Jomar-SH: %s$ ", curdir);
+        printf("Jomar-SH: %s# ", curdir);
         gets(cmdline);
 
         //dont want ot mess around with the cmd so i'll save it in a temporary buffer:
         strcpy(temp, cmdline);
+        if(cmdline[0] == 0 || cmdline[0] == ' '){
+            continue;
+        }
         //grab the cmds itself:
         tok = mystrtok(temp, " ");
         printf("Tok: %s\n", tok);
+        
         //*****************DIRECTORY HANDLING AND LOGGING OUT ***************************//
         if(strcmp(tok, "cd") == 0) {
             tok = mystrtok(0, " ");
@@ -46,11 +50,13 @@ int main(int argc, char *argv[]) {
             chdir("/");
             exit(0);
         }
-        else if (strcmp(cmdline, "pwd") == 0){
+        else if (strcmp(tok, "pwd") == 0){
             pwd();
         }
-
         //******************END OF COMMON DIRECTORY AND LOGGOUT **************************//
+
+
+
         else {
             //we fork!
             prints("Fork a child proc to run the command!\n");
@@ -79,6 +85,8 @@ int main(int argc, char *argv[]) {
                 }
             }
         }
+
+        //****************************DONE WITH EXEC/PIPE! *******************************//
         my_memset(curdir, 0, 128);
     }
 }
