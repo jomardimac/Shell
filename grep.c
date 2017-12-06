@@ -22,7 +22,7 @@ int main(int argc, char *argv[1]){
     else if(argc == 2){
         prints("No filename given\n");
         strcpy(pat, argv[1]);
-        fd = 0;
+        fd = dup(0);
 
         //go through the file:
         while(E_OF == 1){
