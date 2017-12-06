@@ -45,6 +45,32 @@ main (int argc, char *argv[]){
     //make the file uppercase
     if(argc == 2){
         prints("No second file name given");
+        fds = open(argv[1], O_RDONLY);
+        fdd = 1;
+        prints("No filename given!\n");
+        my_memset(buf, 0, 512);
+        while((n = read(fds, buf, 1)) > 0){
+            if(n < 0) { 
+                break;
+            }
+            //check for '\n':
+            toUpper(buf);
+            m = 0;
+            while(m < n) {
+                if(buf[m] == '\r'){
+                    buf[m] = '\n';
+                }
+                
+                write(fdd, &buf[m], 1);
+                if(buf[m] == '\n') { 
+                    write(2, "\r", 1);
+                }
+                m++;
+            }
+        }
+        close(fds);
+        close(fdd);
+        exit(1);
     }
     else{
         fds = open(argv[1], O_RDONLY);
@@ -54,7 +80,7 @@ main (int argc, char *argv[]){
         }
         else{
             //guess we can read it byte by byte and turn it to upper:
-            while((n = read(fds, buf, 8192))){
+            while((n = read(fds, buf, 512))){
                 //check for '\n':
                 toUpper(buf);
                 m = 0;
