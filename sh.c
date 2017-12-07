@@ -83,10 +83,8 @@ int main(int argc, char *argv[]) {
                 
                 if(pipeFound(cmdline) == 0){
                     //check if cmdline has a redirect:
-                    printf("redirect: %d\n", checkRedirect(cmdline));
                     redirect(cmdline, checkRedirect(cmdline));
                     exec(cmdline);
-                    
                 }
                 else{
                     prints("***************************PIPING!***********\n");
@@ -163,6 +161,7 @@ void do_pipe(char *cmdl) {
             
         }
         else {
+            redirect(tail, checkRedirect(tail));
             exec(tail);
             
         }
@@ -171,6 +170,7 @@ void do_pipe(char *cmdl) {
     else { //child = pipe
         close(pd[0]);   //close WRIT:
         dup2(pd[1], 1); //reopen write
+        redirect(head, checkRedirect(head));
         exec(head);
         
     }
@@ -208,7 +208,10 @@ int hasRedirect(char *cmdl) {
     return 0;
 }
 
-//returns whatever redirection string it is:
+//returns:
+//if < : returns 1
+//if > : returns 2
+//if >> : returns 3
 int checkRedirect(char *cmdl) {
     char *str = cmdl;
     int i = 0;
@@ -233,6 +236,8 @@ int checkRedirect(char *cmdl) {
     return 0;
 }
 
+
+
 void redirect(char *cmdl, int flag) {
     char temp[128], filename[128], command[128];
     int i, j, k, fd;
@@ -256,14 +261,12 @@ void redirect(char *cmdl, int flag) {
         filename[k] = '\0';
         
         //successfully grabbed the filename and the command:
-        fd = open(filename, 0);
+        fd = open(filename, O_RDONLY);
         dup2(fd, 0);
-        prints("does it go here?\n");
         exec(command);
     }
     else if(flag == 2) {
         //grab the command:
-        prints("does it go here\n");
         for(i = 0; temp[i] != '>'; i++){
             command[i] = temp[i];
         }
@@ -276,9 +279,25 @@ void redirect(char *cmdl, int flag) {
         filename[k] = '\0';
         
         //successfully grabbed the filename and the command:
-        fd = open(filename, 1);
+        fd = open(filename, O_WRONLY | O_CREAT);
         dup2(fd, 1);
-        prints("does it go here?\n");
+        exec(command);
+    }
+    else if(flag == 3) {
+        for(i = 0; temp[i] != '>'; i++){
+            command[i] = temp[i];
+        }
+        command[i - 1] = '\0';
+        //grab filename:
+        for(j = i + 3, k = 0; j < len; j++,k++){
+            filename[k] = temp[j];
+        }
+
+        filename[k] = '\0';
+        
+        //successfully grabbed the filename and the command:
+        fd = open(filename, O_APPEND | O_WRONLY | O_CREAT);
+        dup2(fd, 1);
         exec(command);
     }
 }

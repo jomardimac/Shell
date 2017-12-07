@@ -13,7 +13,7 @@ int parent() {
         pid = wait(&status);
         //console login proc died:
         if(pid == console){
-            prints("INIT: forks a new console login");
+            //prints("INIT: forks a new console login");
             //fork another proc:
             console = fork();
             if(console){
@@ -24,7 +24,7 @@ int parent() {
                 exec("login /dev/tty0");
             }
         }
-        printf("INIT: I just burried an orphan child proc: %d\n", pid);
+        //printf("INIT: I just burried an orphan child proc: %d\n", pid);
 
     }
 }
@@ -33,7 +33,7 @@ main(){
     int in, out; //file descriptors for terminal i/o
     in = open("/dev/tty0", O_RDONLY); //file descriptor 0
     out = open("/dev/tty0", O_WRONLY); //display console.
-    prints("INIT: fork a login proc on console:\n");
+    //prints("INIT: fork a login proc on console:\n");
     console = fork();
     if(console){
         parent();

@@ -49,8 +49,6 @@ main(int argc, char  *argv[]) {
         gets(usrname);
         prints("Password: "); 
         gets(password);
-        printf("inputed Username: %s \n", usrname);
-        printf("inputted Password: %s \n", password);
         //foreach line in /etc/password file do{
         // tokenize user account line;
         // if valid{
@@ -76,7 +74,6 @@ main(int argc, char  *argv[]) {
         //format: 
         //username:password:uid:gid:fullname:homedir:program
         //we can now tokenize each password and see if it matches:
-        printf("fdBuf:\n%s", fdBuf);
 
         //go through the whole buffer (etc/psswrd)
         
@@ -86,13 +83,9 @@ main(int argc, char  *argv[]) {
         while(tok != 0){
             //compare both file's username & see if its valid:
             if(strcmp(tok,usrname) == 0){
-                prints("Valid username!\n");
                 //compare both file's password & username:
-                printf("tok: %s", tok);
                 tok = mystrtok(0, ":\n");
                 if(strcmp(tok, password) == 0){
-                    printf("pass tok: %s ", tok);
-                    prints("Valid password! \n");
                     //set everything:
                     valid = 1;
                     //originally string so change to int:
@@ -111,9 +104,8 @@ main(int argc, char  *argv[]) {
             
             tok = mystrtok(0, ":\n");
         }
+        prints("Login failed, try again\n");
     }
-
-    prints("Login failed, try again\n");
 
 }
 

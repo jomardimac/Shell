@@ -17,16 +17,16 @@ int main(int argc, char *argv[]){
     int stdin = 0, stdout = 1;
     
 
-    prints("JOMAR'S MORE MAN!\n");
+    prints("************JOMAR'S MORE MAN!************\n");
     char buf[1600], cmdline[64], userch, c;
 
     if(argc < 0){
-        prints("Nothing inputted\n");
+        //prints("Nothing inputted\n");
 
     }
 
     else if(argc == 1){
-        prints("No file selected\n");
+        //prints("No file selected\n");
         //do mroe in stdin and stdout:
         //fd = 0;
         

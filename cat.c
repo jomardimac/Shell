@@ -4,7 +4,7 @@
 #include "ucode.c"
 void * my_memset(void *s, int c, int n);
 int main(int argc, char *argv[]){
-    prints("JOMARS CAT GOES PURRR\n");
+    prints("************JOMARS CAT GOES PURRR************\n");
     int n = 0, i = 0;
     int fd, stdin = 0, stdout = 1;
     char buf[512], cmdLine[64], userch;
@@ -14,17 +14,17 @@ int main(int argc, char *argv[]){
     }
     //cat the stdin:
     else if(argc == 1){
-        prints("No filename given\n");
+        //prints("STDIN given\n");
         fd = 0;
-        while(read(0, buf, 1)){
+        while(read(0, &userch, 1)){
             //check for enter line and add the line in stdout
-            if(buf[0] == '\n'){
+            if(userch == '\n' || userch == '\r'){
                 write(1, "\n", 1);
                 write(1, "\r", 1);
             }
             //if not, then just put the char in screen:
             else{
-                write(1, buf, 1);
+                write(1, &userch, 1);
             }
             //write(stdout, &userch, 1);
         }

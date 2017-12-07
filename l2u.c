@@ -8,7 +8,7 @@ main (int argc, char *argv[]){
     int fds, fdd;
     char buf[512], userchar;
     int n, m = 0;
-    prints("Jomar's L2U Command!\n");
+    prints("************Jomar's L2U Command!***********\n");
     if(argc < 0){
         prints("Not valid command");
     }
@@ -16,7 +16,7 @@ main (int argc, char *argv[]){
     if(argc == 1){
         fds = 0;
         fdd = 1;
-        prints("No filename given!\n");
+        //prints("No filename given!\n");
         my_memset(buf, 0, 512);
         while((n = read(fds, buf, 1)) > 0){
             if(n < 0) { 
@@ -44,10 +44,10 @@ main (int argc, char *argv[]){
     }
     //make the file uppercase
     if(argc == 2){
-        prints("No second file name given");
+        //prints("No second file name given");
         fds = open(argv[1], O_RDONLY);
         fdd = 1;
-        prints("No filename given!\n");
+        //prints("No filename given!\n");
         my_memset(buf, 0, 512);
         while((n = read(fds, buf, 1)) > 0){
             if(n < 0) { 

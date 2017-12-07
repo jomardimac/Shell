@@ -14,13 +14,13 @@ int main(int argc, char *argv[1]){
     int n, line;
     int LINES = 80;
     char pat[64], buf[128];
-
+    prints("************Jomar's GREP Command!***********\n");
     if(argc < 1){
         prints("Pattern required\n");
         exit(1);
     }
     else if(argc == 2){
-        prints("No filename given\n");
+        //prints("No filename given\n");
         strcpy(pat, argv[1]);
         fd = dup(0);
 
