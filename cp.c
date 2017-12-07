@@ -16,6 +16,7 @@ main(int argc, char *argv[]){
         //open up the two command lines 
         fds = open(argv[1], O_RDONLY);
         fdd = open(argv[2], O_WRONLY | O_CREAT);
+        printf("fds: %d fdd: %d\n", fds, fdd);
         if(fds < 0 || fdd < 0) {
             prints("open() failed");
         }

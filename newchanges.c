@@ -6,9 +6,9 @@
 void do_pipe(char *cmdl);
 char *mystrtok(char *source, const char *delimeter);
 void * my_memset(void *s, int c, int n);
-int checkRedirect(char *cmdl);
+char *checkRedirect(char *cmdl);
 int hasRedirect(char *cmdl);
-void redirect(char *cmdl, int flag);
+
 
 int status;
 
@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
             continue;
         }
         //grab the cmds itself:
-        tok = mystrtok(temp, " ");
+        tok = mystrtok(temp, " ");s
         
         //*****************DIRECTORY HANDLING AND LOGGING OUT ***************************//
         if(strcmp(tok, "cd") == 0) {
@@ -70,23 +70,48 @@ int main(int argc, char *argv[]) {
                 prints("fork() failed, no child proc\n");
                 exit(0);
             }
-
             if(pid) {
                 //do child first
                 printf("Parent id: %d forked child: %d ... waiting for it to die\n", getpid(), pid);
                 pid = wait(&status);
                 printf("child %d done with proc BACK TO SHELL!\n", pid);                
             }
-            //CHILD PROCCESS:
             else {
                 printf("\n\nCOMMANDLINE = %s \n\n", cmdline);
                 
                 if(pipeFound(cmdline) == 0){
                     //check if cmdline has a redirect:
-                    printf("redirect: %d\n", checkRedirect(cmdline));
-                    redirect(cmdline, checkRedirect(cmdline));
-                    exec(cmdline);
-                    
+                    if(redirectFound == 1) {
+                        char templine[128], tailRedirect[128], headRedirect[128];
+                        strcpy(templine, cmdline);
+                        int iter, i = 0;
+                        //if(strcmp(checkRedirect(templine),">") == 0) {
+                            //  for( i = 0; templine[i] != '>'; i++) {
+                                //headRedirect[i] = templine[i];
+                            //}
+                            //headRedirect[i-1] =
+                            //  for ( iter = inIndex + 2, i = 0;templine[iter] == '\0' ; iter++, i++) {
+                                //tailRedirect[i] = templine[iter];
+                                
+                            //}
+                            //tailRedirect[i] = 0;
+                            //print("tail: %s\n", tailRedirect);
+                            //
+                        //}
+                        // else if(strcmp(checkRedirect(templine),">>") == 0) {
+                            //for( iter = outIndex + 2, i = 0; templine[iter] == '\0' ; iter++, i++){
+                                //tailRedirect[i] = templine[iter];
+                            //}
+                        // }
+                        // else if(strcmp(checkRedirect(templine),"<") == 0) {
+                            //for( iter = appendIndex + 2, i = 0 ; templine[iter] == '\0' ; iter++, i++){
+                                //tailRedirect[i] = templine[iter];
+                            //}
+                        // }
+                    }
+                    else {
+                        exec(cmdline);
+                    }
                 }
                 else{
                     prints("***************************PIPING!***********\n");
@@ -209,78 +234,27 @@ int hasRedirect(char *cmdl) {
 }
 
 //returns whatever redirection string it is:
-int checkRedirect(char *cmdl) {
+char *checkRedirect(char *cmdl) {
     char *str = cmdl;
     int i = 0;
     while(*str) { 
         
         if(*str == '>') {
-            str++;
-            if( *str == '>'){
+            if(*str++ == '>'){
                 appendIndex = i;
-                return 3;
+                return ">>";
             } 
-            outIndex = i;
-            return 2;
+            inIndex = i;
+            return ">";
         }
         if(*str == '<') {
-            inIndex = i;
-            return 1 ;
+            writeIndex = i;
+            return "<";
         }
         str++;
         i++;
     }
     return 0;
-}
-
-void redirect(char *cmdl, int flag) {
-    char temp[128], filename[128], command[128];
-    int i, j, k, fd;
-    int len = strlen(cmdl);
-    //dont mess with the input:
-    my_memset(temp,0,128);
-    my_memset(filename,0,128);
-    my_memset(command,0,128);
-    strcpy(temp, cmdl);
-    if(flag == 1) {
-        //grab the command:
-        for(i = 0; temp[i] != '<'; i++){
-            command[i] = temp[i];
-        }
-        command[i - 1] = '\0';
-        //grab filename:
-        for(j = i + 2, k = 0; j < len ; j++,k++){
-            filename[k] = temp[j];
-        }
-
-        filename[k] = '\0';
-        
-        //successfully grabbed the filename and the command:
-        fd = open(filename, 0);
-        dup2(fd, 0);
-        prints("does it go here?\n");
-        exec(command);
-    }
-    else if(flag == 2) {
-        //grab the command:
-        prints("does it go here\n");
-        for(i = 0; temp[i] != '>'; i++){
-            command[i] = temp[i];
-        }
-        command[i - 1] = '\0';
-        //grab filename:
-        for(j = i + 2, k = 0; j < len; j++,k++){
-            filename[k] = temp[j];
-        }
-
-        filename[k] = '\0';
-        
-        //successfully grabbed the filename and the command:
-        fd = open(filename, 1);
-        dup2(fd, 1);
-        prints("does it go here?\n");
-        exec(command);
-    }
 }
 
 #endif

@@ -15,29 +15,29 @@ int main(int argc, char *argv[]){
     //cat the stdin:
     else if(argc == 1){
         prints("No filename given\n");
-
-        while(read(stdin, &userch, 1)){
+        fd = 0;
+        while(read(0, buf, 1)){
             //check for enter line and add the line in stdout
-            if(userch == '\n' || userch == '\r'){
-                write(stdout, "\n", 1);
-                write(stdout, "\r", 1);
+            if(buf[0] == '\n'){
+                write(1, "\n", 1);
+                write(1, "\r", 1);
             }
             //if not, then just put the char in screen:
             else{
-                write(stdout, &userch, 1);
+                write(1, buf, 1);
             }
             //write(stdout, &userch, 1);
         }
     }
     else{
         //open the file, read the file and print the buffer
-        strcpy(cmdLine, argv[1]);
-        fd = open(cmdLine, O_RDONLY);
+        fd = open(argv[1], O_RDONLY);
         my_memset(buf, 0, 512);
         while((n = read( fd, buf, 512))){
-            printf("%s", buf);
+            prints(buf);
+            my_memset(buf, 0, 512);
+            //write(fd, buf, n);
         }
-        my_memset(buf, 0, 512);
         close(fd);
     }
 }
