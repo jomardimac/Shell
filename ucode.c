@@ -642,9 +642,5 @@ char *mystrtok(char *src, const char *delim){
   return tok;
 }
 
-// char * mystrcat(char *dest, char *src){
-//   strcpy(dest + strlen(dest), src);
-//   return dest;
-// }
 
 #endif

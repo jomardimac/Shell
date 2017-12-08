@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
             }
             //CHILD PROCCESS:
             else {
-                printf("\n\nCOMMANDLINE = %s \n\n", cmdline);
+                //printf("\n\nCOMMANDLINE = %s \n\n", cmdline);
                 
                 if(pipeFound(cmdline) == 0){
                     //check if cmdline has a redirect:
@@ -151,9 +151,8 @@ void do_pipe(char *cmdl) {
 
     //PARENT PROC:
     if(pid){ //parent = reader
-        close(pd[1]); //close the pip read
-        dup2(pd[0], 0);   //redirect stdout to pipe write
-        
+        close(pd[1]); //close the pip write
+        dup2(pd[0], 0);   //redirect stdout to pipe read
 
         if(pipeFound(tail) != 0) {
             //printf("Found a pipe: %s\n", tail);
@@ -168,7 +167,7 @@ void do_pipe(char *cmdl) {
     }
     //CHILD PROC:
     else { //child = pipe
-        close(pd[0]);   //close WRIT:
+        close(pd[0]);   //close READ:
         dup2(pd[1], 1); //reopen write
         redirect(head, checkRedirect(head));
         exec(head);
