@@ -131,21 +131,24 @@ void printLine(int fd){
 
     byt = 0;
     //read 80 bytes in a line:
-    while(byt < CHARS){
+    for(byt = 0; byt < CHARS; byt++){
         //read the char:
         n = read(fd, &c, 1);
         if(n == 0){
            endoffile = 0;
            return; 
         }
+
+        mputc(c);
         
-        if(c != '\n' || c != '\r'){
-            mputc(c);
+        if(c == '\n' ){
+            break;
         }
-        byt++;
+        // if(c == '\r') {
+        //     mputc('\b');
+        // }
     }
     
-    mputc('\n');
 }
 
 
@@ -206,13 +209,12 @@ void outprintLine(int fd){
            endoffile = 0;
            return; 
         }
-        
-        if(c != '\n' || c != '\r'){
-            write(1, &c, 1);
+        write(1, &c, 1);
+        if(c == '\n'){
+            break;
         }
         byt++;
     }
     
-    mputc('\n');
 }
 #endif
